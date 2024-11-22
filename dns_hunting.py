@@ -45,9 +45,10 @@ def reverse_dns_lookup(file_name):
         try:
             reversed_name = reversename.from_address(ip_address)
             resolved_name = resolver.resolve(reversed_name, "PTR")
-            print(f"Reverse DNS for {ip_address}: {resolved_name[0]}")
-            with open(file_name, "a") as file:
-                file.write(f"\nReverse DNS for {ip_address}:\n{resolved_name[0]}\n")
+            for ptr_record in resolved_name:
+                with open(file_name, "a") as file:
+                    file.write(f"\nReverse DNS for {ip_address}:\n{ptr_record}\n")
+
         except dns.resolver.NXDOMAIN:
             print(f"No reverse DNS found for {ip_address}.")
             with open(file_name, "a") as file:
@@ -81,6 +82,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
-
